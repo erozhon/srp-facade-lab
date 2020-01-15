@@ -1,6 +1,6 @@
 package srpfacadelab;
 
-public class Item {
+public class Item implements ItemInterface {
 
     private int id;
 
@@ -30,6 +30,28 @@ public class Item {
         this.setWeight(weight);
         this.setUnique(unique);
         this.setId(id);
+    }
+
+    public void playEffects(IGameEngine gameEngine) {
+        if (this.isRare() && this.isUnique()) {
+            gameEngine.playSpecialEffect("blue_swirly");
+        } else if (this.isRare()) {
+            gameEngine.playSpecialEffect("cool_swirly_particles");
+        }
+    }
+
+    public int healPlayer(int health, int maxHealth, IGameEngine gameEngine) { 
+        if (this.getHeal() > 0) {
+            health += this.getHeal();
+
+            if (health > maxHealth)
+                health = maxHealth;
+
+            if (this.getHeal() > 500) {
+                gameEngine.playSpecialEffect("green_swirly");
+            }
+        }
+        return health;
     }
 
     public int getId() {
